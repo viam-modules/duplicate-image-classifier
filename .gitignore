@@ -172,3 +172,5 @@ cython_debug/
 
 # This file is present when `make setup` has run successfully
 .installed
+
+**/.DS_Store
