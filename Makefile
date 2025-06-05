@@ -17,6 +17,5 @@ test:
 # Following checks disabled:
 # C0114: modules don't have docstrings
 # C0115: classes don't have docstrings
-# E1101: linter doesn't know that cv2 has methods
 lint:
-	pylint --disable=C0114,C0115,E1101 src/
+	pylint --disable=C0114,C0115 src/
