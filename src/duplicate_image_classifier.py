@@ -45,7 +45,7 @@ class DuplicateImageClassifier(Vision, EasyResource):
         self.camera = None
         self.camera_name = None
         self.current_image = create_empty_rgb_image(480, 640)
-        self.average_pixel_difference_threshold = 20.0
+        self.average_pixel_difference_threshold = 5.0
 
     @classmethod
     def new(

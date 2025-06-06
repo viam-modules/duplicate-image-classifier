@@ -16,7 +16,7 @@ The following attributes are available for this model:
 | Name          | Type   | Inclusion | Description                |
 |---------------|--------|-----------|----------------------------|
 | `camera_name` | string  | Required  | The name of the camera configured on your robot. |
-| `average_pixel_difference_threshold` | float | Optional  | The threshold _above_ which an image would be considered different. The **default** value is 20.0. |
+| `average_pixel_difference_threshold` | float | Optional  | The threshold _above_ which an image would be considered different. The **default** value is 5.0. |
 
 
 ## Configuration
@@ -36,7 +36,7 @@ On the new component panel, copy and paste the following attribute template into
 ```json
 {
     "camera_name": "myCam",
-    "average_pixel_difference_threshold": 20.0
+    "average_pixel_difference_threshold": 5.0
 }
 ```
 
@@ -60,7 +60,7 @@ On the new component panel, copy and paste the following attribute template into
       "model": "viam:duplicate-image-classifier:duplicate-image-classifier",
       "attributes": {
         "camera_name": "myCam",
-        "average_pixel_difference_threshold": 20.0
+        "average_pixel_difference_threshold": 5.0
       }
     }
   ]
