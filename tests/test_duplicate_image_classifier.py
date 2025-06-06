@@ -1,10 +1,9 @@
-from typing import List, Dict
 from unittest.mock import patch
 from src.duplicate_image_classifer_module import DuplicateImageClassifier
 from tests.fake_camera import FakeCamera, read_image
 from PIL import Image
 
-from viam.proto.app.robot import ComponentConfig, ServiceConfig
+from viam.proto.app.robot import ComponentConfig
 from viam.utils import dict_to_struct
 
 import pytest

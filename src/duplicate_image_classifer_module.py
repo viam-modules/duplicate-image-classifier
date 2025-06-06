@@ -164,8 +164,6 @@ class DuplicateImageClassifier(Vision, EasyResource):
         """
         self.current_image = decode_image(image)
 
-    # I assume the following three functions are here to conform to the Vision superclass?
-    ########################################################
     async def get_detections_from_camera(
         self,
         camera_name: str,
@@ -192,7 +190,6 @@ class DuplicateImageClassifier(Vision, EasyResource):
         timeout: Optional[float] = None,
     ) -> List[PointCloudObject]:
         raise NotImplementedError()
-    ########################################################
 
     async def get_classifications_from_camera(
         self,
@@ -223,7 +220,6 @@ class DuplicateImageClassifier(Vision, EasyResource):
         im = await self.camera.get_image(mime_type=CameraMimeType.JPEG)
         return await self.get_classifications(im, 1, extra=extra, timeout=timeout)
 
-    # True difference from blurry-classifier lies in this function
     async def get_classifications(
         self,
         image: ViamImage,
