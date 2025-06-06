@@ -1,5 +1,5 @@
 from unittest.mock import patch
-from src.duplicate_image_classifer_module import DuplicateImageClassifier
+from src.duplicate_image_classifier import DuplicateImageClassifier
 from tests.fake_camera import FakeCamera, read_image
 from PIL import Image
 
