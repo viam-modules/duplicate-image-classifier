@@ -1,6 +1,6 @@
 from typing import ClassVar, List, Mapping, Optional, Sequence, Union
-from typing_extensions import Self
-from utils import decode_image, create_empty_rgb_image
+
+import numpy as np
 from PIL import Image
 
 from viam.components.camera import Camera
@@ -15,7 +15,7 @@ from viam.services.vision import Vision, CaptureAllResult
 from viam.utils import ValueTypes
 from viam.logging import getLogger
 
-import numpy as np
+from src.utils import decode_image, create_empty_rgb_image
 
 
 LOGGER = getLogger("DuplicateImageClassifierLogger")
@@ -24,9 +24,10 @@ class DuplicateImageClassifier(Vision, EasyResource):
     """
     DuplicateImageClassifer implements a vision service that only supports classification.
     
-    It detects whether the camera's view has changed significantly since the last frame. This helps to avoid 
-    uploading too many nearly identical photos. This is done by doing a pixel-wise diff of two images, by 
-    checking how different, on average, two numpy array representations of the images are.
+    It detects whether the camera's view has changed significantly since the last frame. 
+    This helps to avoid uploading too many nearly identical photos. 
+    This is done by doing a pixel-wise diff of two images, by checking how different, 
+    on average, two numpy array representations of the images are.
 
     It inherits from the built-in resource subtype Vision and conforms to the
     ``Reconfigurable`` protocol, which signifies that this component can be
@@ -68,7 +69,7 @@ class DuplicateImageClassifier(Vision, EasyResource):
         service = cls(config.name)
         service.reconfigure(config, dependencies)
         return service
-    
+
     @classmethod
     def validate_config(cls, config: ComponentConfig) -> Sequence[str]:
         """
@@ -106,8 +107,10 @@ class DuplicateImageClassifier(Vision, EasyResource):
         self.camera_name = config.attributes.fields["camera_name"].string_value
         self.camera = dependencies[Camera.get_resource_name(self.camera_name)]
         if "average_pixel_difference_threshold" in config.attributes.fields:
-            self.average_pixel_difference_threshold = config.attributes.fields["average_pixel_difference_threshold"].number_value
+            self.average_pixel_difference_threshold = config.attributes.fields[
+                "average_pixel_difference_threshold"].number_value
 
+    # pylint: disable=too-many-arguments,too-many-positional-arguments
     async def capture_all_from_camera(
         self,
         camera_name: str,
@@ -152,9 +155,10 @@ class DuplicateImageClassifier(Vision, EasyResource):
 
     def set_current_image(self, image: Union[Image.Image, ViamImage, np.ndarray]):
         """
-        This function sets the current image to the provided parameter image after decoding it. (Mainly used for testing purposes)
+        This function sets the current image to the provided parameter image after decoding it.
+        (Mainly used for testing purposes)
         Args:
-            image (Union[Image.Image, ViamImage, np.ndarray]): The image to set as the current image.
+            image (Union[Image.Image, ViamImage, np.ndarray]): The current image to set.
         Returns:
             None
         """
@@ -179,7 +183,7 @@ class DuplicateImageClassifier(Vision, EasyResource):
         timeout: Optional[float] = None,
     ) -> List[Detection]:
         raise NotImplementedError()
-    
+
     async def get_object_point_clouds(
         self,
         camera_name: str,
@@ -218,7 +222,7 @@ class DuplicateImageClassifier(Vision, EasyResource):
             raise RuntimeError("Camera dependency is not properly configured or is missing.")
         im = await self.camera.get_image(mime_type=CameraMimeType.JPEG)
         return await self.get_classifications(im, 1, extra=extra, timeout=timeout)
-    
+
     # True difference from blurry-classifier lies in this function
     async def get_classifications(
         self,
@@ -229,7 +233,8 @@ class DuplicateImageClassifier(Vision, EasyResource):
         timeout: Optional[float] = None,
     ) -> List[Classification]:
         """
-        This function compares the current image with the new image and returns a classification based on the pixel difference.
+        This function compares the current image with the new image 
+        and returns a classification based on the pixel difference.
 
         Args:
             image (ViamImage): The new image to compare with the current image.
@@ -237,11 +242,12 @@ class DuplicateImageClassifier(Vision, EasyResource):
             extra (Optional[Mapping[str, ValueTypes]]): Additional parameters for the function.
             timeout (Optional[float]): Timeout for the function call.
         Returns:
-            List[Classification]: A list containing a single classification indicating whether the image is "different" or not.
+            List[Classification]: Contains a single classification indicating
+            if the image is "different" or not.
         """
         img = decode_image(image)
-        pixel_by_pixel_difference = np.abs(img.astype(np.int16) - self.current_image.astype(np.int16))
-        average_pixel_difference = np.mean(pixel_by_pixel_difference)
+        pixel_by_pixel_diff = np.abs(img.astype(np.int16) - self.current_image.astype(np.int16))
+        average_pixel_difference = np.mean(pixel_by_pixel_diff)
         LOGGER.info("Average pixel difference is: %f. Threshold is %f.",
                     average_pixel_difference, self.average_pixel_difference_threshold)
         if self.average_pixel_difference_threshold < average_pixel_difference:
@@ -249,7 +255,7 @@ class DuplicateImageClassifier(Vision, EasyResource):
             return [Classification(class_name="different", confidence=1.0)]
 
         return []
-    
+
     async def get_properties(
         self,
         *,
@@ -257,7 +263,7 @@ class DuplicateImageClassifier(Vision, EasyResource):
         timeout: Optional[float] = None,
     ) -> Vision.Properties:
         """
-        This function returns the properties of the vision service, indicating that it supports classifications.
+        This function returns the properties of the vision service.
         """
         return Vision.Properties(
             classifications_supported=True,

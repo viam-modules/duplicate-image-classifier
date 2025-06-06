@@ -19,10 +19,19 @@ SUPPORTED_IMAGE_TYPE = [
 LIBRARY_SUPPORTED_FORMATS = ["JPEG", "PNG", "VIAM_RGBA"]
 
 def create_empty_rgb_image(height: int, width: int) -> np.ndarray:
+    """
+    Create an empty RGB image with the specified height and width
+    Args:
+        height (int): Height of the image
+        width (int): Width of the image
+    Returns:
+        np.ndarray: An empty RGB image of the specified size
+    """
     return np.zeros((height, width, 3), dtype=np.uint8)
 
 def decode_image(image: Union[Image.Image, ViamImage, np.ndarray]) -> np.ndarray:
-    """decode image to BGR numpy array
+    """
+    Decode image to BGR numpy array.
     Args:
         raw_image (Union[Image.Image, RawImage])
     Returns:
@@ -38,10 +47,10 @@ def decode_image(image: Union[Image.Image, ViamImage, np.ndarray]) -> np.ndarray
 
             raise ValueError(f"Unsupported image type: {image.mime_type}.")
 
-        pil_image = Image.open(BytesIO(image.data), formats=LIBRARY_SUPPORTED_FORMATS).convert("RGB")
+        pil_img = Image.open(BytesIO(image.data), formats=LIBRARY_SUPPORTED_FORMATS).convert("RGB")
     else:
-        pil_image = image
+        pil_img = image
 
-    res = pil_image.convert("RGB") # type: ignore
+    res = pil_img.convert("RGB") # type: ignore
     rgb = np.array(res)
     return rgb
