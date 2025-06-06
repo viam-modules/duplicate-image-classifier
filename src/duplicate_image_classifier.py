@@ -1,3 +1,4 @@
+# pylint: disable=import-error
 from typing import ClassVar, List, Mapping, Optional, Sequence, Union
 
 import numpy as np
@@ -141,7 +142,7 @@ class DuplicateImageClassifier(Vision, EasyResource):
                 f"Camera name {camera_name} does not match the camera name " +
                 f"{self.camera_name} in the config."
             )
-        # Added check for camera dependency, otherwise gets error on calling get_image function
+
         if self.camera is None or not isinstance(self.camera, Camera):
             raise RuntimeError("Camera dependency is not properly configured or is missing.")
         image = await self.camera.get_image(mime_type=CameraMimeType.JPEG)

@@ -1,4 +1,4 @@
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,consider-using-from-import,import-error,unused-import
 import asyncio
 
 from viam.module.module import Module
