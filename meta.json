@@ -3,13 +3,13 @@
   "module_id": "viam:duplicate-image-classifier",
   "visibility": "public",
   "url": "https://github.com/viam-modules/duplicate-image-classifier",
-  "description": "Modular vision service: duplicate-image-classifier",
+  "description": "A vision service that classifies an image as different from the previous frame",
   "models": [
     {
       "api": "rdk:service:vision",
       "model": "viam:duplicate-image-classifier:duplicate-image-classifier",
       "markdown_link": "README.md#configuration",
-      "short_description":  "A vision service that classifies an image as different from the previous frame."
+      "short_description":  "A vision service that classifies an image as different from the previous frame"
     }
   ],
   "applications": null,
