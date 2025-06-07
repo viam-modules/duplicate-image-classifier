@@ -8,7 +8,7 @@
     {
       "api": "rdk:service:vision",
       "model": "viam:duplicate-image-classifier:duplicate-image-classifier",
-      "markdown_link": "README.md",
+      "markdown_link": "README.md#configuration",
       "short_description":  "A vision service that classifies an image as different from the previous frame."
     }
   ],
