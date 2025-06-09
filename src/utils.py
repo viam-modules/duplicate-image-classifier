@@ -36,13 +36,12 @@ def decode_image(image: Union[Image.Image, ViamImage, np.ndarray]) -> np.ndarray
         np.ndarray: BGR numpy array: The decoded image as a numpy array
     """
     if isinstance(image, ViamImage):
-        if image.mime_type not in SUPPORTED_IMAGE_TYPE:
+        if image.mime_type not in SUPPORTED_IMAGE_TYPES:
             LOGGER.error(
                 "Unsupported image type: %s. Supported types are %s.",
                 image.mime_type,
-                SUPPORTED_IMAGE_TYPE,
+                SUPPORTED_IMAGE_TYPES,
             )
-
             raise ValueError(f"Unsupported image type: {image.mime_type}.")
 
         pil_img = Image.open(BytesIO(image.data), formats=LIBRARY_SUPPORTED_FORMATS).convert("RGB")
