@@ -1,12 +1,10 @@
-from typing import Union
 from io import BytesIO
-from PIL import Image
+from typing import Union
 
 import numpy as np
-
+from PIL import Image
 from viam.logging import getLogger
-from viam.media.video import CameraMimeType
-from viam.media.video import ViamImage
+from viam.media.video import CameraMimeType, ViamImage
 
 LOGGER = getLogger(__name__)
 
