@@ -30,3 +30,4 @@ class FakeCamera(Camera):
 
     async def get_point_cloud(self) -> Coroutine[Any, Any, Tuple[Union[bytes, str]]]:
         raise NotImplementedError
+
