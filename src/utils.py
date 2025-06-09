@@ -31,9 +31,9 @@ def decode_image(image: Union[Image.Image, ViamImage, np.ndarray]) -> np.ndarray
     """
     Decode image to BGR numpy array.
     Args:
-        raw_image (Union[Image.Image, RawImage])
+        raw_image (Union[Image.Image, ViamImage, np.ndarray]): The image to decode
     Returns:
-        np.ndarray: BGR numpy array
+        np.ndarray: BGR numpy array: The decoded image as a numpy array
     """
     if isinstance(image, ViamImage):
         if image.mime_type not in SUPPORTED_IMAGE_TYPE:
