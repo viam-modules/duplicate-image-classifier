@@ -8,7 +8,7 @@ from viam.media.video import CameraMimeType, ViamImage
 
 LOGGER = getLogger(__name__)
 
-SUPPORTED_IMAGE_TYPE = [
+SUPPORTED_IMAGE_TYPES = [
     CameraMimeType.JPEG,
     CameraMimeType.PNG,
     CameraMimeType.VIAM_RGBA,
