@@ -8,9 +8,11 @@ ENV_ERROR="This module requires Python, pip, and virtualenv to be installed."
 
 if ! python3 -m venv $VENV_NAME >/dev/null 2>&1; then
     echo "Failed to create virtualenv."
+    # If the virtualenv creation fails, we try to install python3-venv
     if command -v apt-get >/dev/null; then
         echo "Detected Debian/Ubuntu, attempting to install python3-venv automatically."
         SUDO="sudo"
+        # If sudo is not available, we don't use it and use apt-get instead, making the script more portable
         if ! command -v $SUDO >/dev/null; then
             SUDO=""
         fi
