@@ -24,7 +24,7 @@ def get_vision_service(similar: bool = True) -> DuplicateImageClassifier:
     camera_name = cam.get_resource_name(CAMERA_NAME)
     service.validate_config(config)
     service.reconfigure(config, dependencies={camera_name: cam}) # type: ignore
-    service.set_current_image(read_image("img"))  # Set a default image for testing
+    service.set_previous_image(read_image("img"))  # Set a default image for testing
     return service
  
 class TestDuplicateClassifier:

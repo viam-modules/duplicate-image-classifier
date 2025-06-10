@@ -45,7 +45,7 @@ class DuplicateImageClassifier(Vision, EasyResource):
         super().__init__(name=name)
         self.camera = None
         self.camera_name = None
-        self.current_image = create_empty_rgb_image(480, 640)
+        self.previous_image = create_empty_rgb_image(480, 640)
         self.average_pixel_difference_threshold = 5.0
 
     @classmethod
@@ -154,16 +154,16 @@ class DuplicateImageClassifier(Vision, EasyResource):
 
         return CaptureAllResult(image=image, classifications=classifications)
 
-    def set_current_image(self, image: Union[Image.Image, ViamImage, np.ndarray]):
+    def set_previous_image(self, image: Union[Image.Image, ViamImage, np.ndarray]):
         """
         This function sets the current image to the provided parameter image after decoding it.
-        (Mainly used for testing purposes)
+        (USED IN TESTS ONLY)
         Args:
             image (Union[Image.Image, ViamImage, np.ndarray]): The current image to set.
         Returns:
             None
         """
-        self.current_image = decode_image(image)
+        self.previous_image = decode_image(image)
 
     async def get_detections_from_camera(
         self,
@@ -243,12 +243,12 @@ class DuplicateImageClassifier(Vision, EasyResource):
             if the image is "different" or not.
         """
         img = decode_image(image)
-        pixel_by_pixel_diff = np.abs(img.astype(np.int16) - self.current_image.astype(np.int16))
+        pixel_by_pixel_diff = np.abs(img.astype(np.int16) - self.previous_image.astype(np.int16))
         average_pixel_difference = np.mean(pixel_by_pixel_diff)
         LOGGER.info("Average pixel difference is: %f. Threshold is %f.",
                     average_pixel_difference, self.average_pixel_difference_threshold)
         if self.average_pixel_difference_threshold < average_pixel_difference:
-            self.current_image = img
+            self.previous_image = img
             return [Classification(class_name="different", confidence=1.0)]
 
         return []
