@@ -249,8 +249,8 @@ class DuplicateImageClassifier(Vision, EasyResource):
         average_pixel_difference = np.mean(pixel_by_pixel_diff)
         LOGGER.info("Average pixel difference is: %f. Threshold is %f.",
                     average_pixel_difference, self.average_pixel_difference_threshold)
+        self.previous_image = img
         if self.average_pixel_difference_threshold < average_pixel_difference:
-            self.previous_image = img
             return [Classification(class_name="different", confidence=1.0)]
 
         return []
