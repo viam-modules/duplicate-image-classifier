@@ -16,7 +16,7 @@ The following attributes are available for this model:
 | Name          | Type   | Inclusion | Description                |
 |---------------|--------|-----------|----------------------------|
 | `camera_name` | string  | Required  | The name of the camera configured on your robot. |
-| `average_pixel_difference_threshold` | float | Optional  | The threshold _above_ which an image would be considered different. The **default** value is 5.0. |
+| `average_pixel_difference_threshold` | float | Optional  | The threshold _above_ which an image would be considered different. The range is 0.0 to 255.0. The **default** value is 5.0. |
 
 
 ## Configuration
