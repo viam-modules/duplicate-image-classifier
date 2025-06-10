@@ -5,6 +5,11 @@ VENV_NAME="venv"
 PYTHON="$VENV_NAME/bin/python"
 ENV_ERROR="This module requires Python, pip, and virtualenv to be installed."
 
+# Check if already installed the python packages
+if [ -f .installed ]; then
+    # We are already done!
+    exit 0
+fi
 # Attempt to create a virtual environment, and if it fails, try to install python3-venv
 if ! python3 -m venv $VENV_NAME; then
     echo "Failed to create virtualenv." >&2
@@ -35,13 +40,10 @@ if ! python3 -m venv $VENV_NAME; then
 fi
 
 echo "Virtualenv found/created. Installing Python packages..."
-# Check if packages are already installed
-if ! [ -f .installed ]; then
-    if ! $PYTHON -m pip install -r requirements.txt -q; then
-        echo "Failed to install Python packages. Please try again." >&2
-        exit 1
-    else
-        touch .installed
-        echo "Python packages installed successfully."
-    fi
+if ! $PYTHON -m pip install -r requirements.txt -q; then
+    echo "Failed to install Python packages. Please try again." >&2
+    exit 1
 fi
+
+touch .installed
+echo "Python packages installed successfully."
