@@ -1,11 +1,11 @@
 #!/bin/sh
 cd `dirname $0`
 
-# Create a virtual environment to run our code
 VENV_NAME="venv"
 PYTHON="$VENV_NAME/bin/python"
 ENV_ERROR="This module requires Python, pip, and virtualenv to be installed."
 
+# Attempt to create a virtual environment, and if it fails, try to install python3-venv
 if ! python3 -m venv $VENV_NAME; then
     echo "Failed to create virtualenv." >&2
     # If the virtualenv creation fails, we try to install python3-venv
