@@ -1,0 +1,28 @@
+{
+  "$schema": "https://dl.viam.dev/module.schema.json",
+  "module_id": "viam:duplicate-image-classifier",
+  "visibility": "public",
+  "url": "https://github.com/viam-modules/duplicate-image-classifier",
+  "description": "A vision service that classifies an image as different from the previous frame",
+  "models": [
+    {
+      "api": "rdk:service:vision",
+      "model": "viam:duplicate-image-classifier:duplicate-image-classifier",
+      "markdown_link": "README.md#configuration",
+      "short_description":  "A vision service that classifies an image as different from the previous frame"
+    }
+  ],
+  "applications": null,
+  "entrypoint": "dist/main",
+  "first_run": "",
+  "build": {
+    "build": "./build.sh",
+    "setup": "./setup.sh",
+    "path": "dist/archive.tar.gz",
+    "arch": [
+      "linux/amd64",
+      "linux/arm64",
+      "darwin/arm64"
+    ]
+  }
+}
