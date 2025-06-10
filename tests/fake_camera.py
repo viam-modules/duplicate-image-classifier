@@ -15,7 +15,7 @@ def read_image(name: str):
 class FakeCamera(Camera):
     def __init__(self, name: str, different: bool = True):
         super().__init__(name=name)
-        self.image = read_image("different" if different else "similar")
+        self.image = read_image("different" if different else "img")
 
     async def get_image(self, mime_type: str = "") -> ViamImage:
         return pil.pil_to_viam_image(self.image, CameraMimeType.JPEG)
