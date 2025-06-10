@@ -243,11 +243,15 @@ class DuplicateImageClassifier(Vision, EasyResource):
             if the image is "different" or not.
         """
         img = decode_image(image)
+        # If the image shape does not match the previous image shape,
+        # we return a classification of "different" to avoid errors
         if img.shape != self.previous_image.shape:
-            raise ValueError("The image shape does not match the previous image shape.")
+            self.previous_image = img
+            return [Classification(class_name="different", confidence=1.0)]
+
         pixel_by_pixel_diff = np.abs(img.astype(np.int16) - self.previous_image.astype(np.int16))
         average_pixel_difference = np.mean(pixel_by_pixel_diff)
-        LOGGER.info("Average pixel difference is: %f. Threshold is %f.",
+        LOGGER.debug("Average pixel difference is: %f. Threshold is %f.",
                     average_pixel_difference, self.average_pixel_difference_threshold)
         self.previous_image = img
         if self.average_pixel_difference_threshold < average_pixel_difference:
