@@ -12,10 +12,6 @@ if ! python3 -m venv $VENV_NAME; then
     if command -v apt-get >/dev/null; then
         echo "Detected Debian/Ubuntu, attempting to install python3-venv automatically."
         SUDO="sudo"
-        # If sudo is not available, we don't use it and use apt-get instead, making the script more portable
-        if ! command -v $SUDO >/dev/null; then
-            SUDO=""
-        fi
         # Run apt-get update by default, but only if it's available
         echo "Updating package lists..."
         if ! $SUDO apt-get update; then
