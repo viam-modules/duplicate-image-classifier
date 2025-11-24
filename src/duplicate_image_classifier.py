@@ -1,11 +1,11 @@
 # pylint: disable=import-error
-from typing import ClassVar, List, Mapping, Optional, Sequence, Union
+from typing import ClassVar, List, Mapping, Optional, Sequence, Union, Tuple
 
 import numpy as np
 from PIL import Image
 
 from viam.components.camera import Camera
-from viam.media.video import CameraMimeType, ViamImage
+from viam.media.video import ViamImage
 from viam.proto.app.robot import ComponentConfig
 from viam.proto.common import PointCloudObject, ResourceName
 from viam.proto.service.vision import Classification, Detection
@@ -72,7 +72,7 @@ class DuplicateImageClassifier(Vision, EasyResource):
         return service
 
     @classmethod
-    def validate_config(cls, config: ComponentConfig) -> Sequence[str]:
+    def validate_config(cls, config: ComponentConfig) -> Tuple[Sequence[str], Sequence[str]]:
         """
         This method allows you to validate the configuration object received
         from the machine, as well as to return any implicit dependencies based
@@ -89,7 +89,7 @@ class DuplicateImageClassifier(Vision, EasyResource):
             raise ValueError(
                 "A camera name is required for face_identification vision service module."
             )
-        return [camera_name]
+        return [camera_name], []
 
     def reconfigure(
         self,
@@ -145,7 +145,10 @@ class DuplicateImageClassifier(Vision, EasyResource):
 
         if self.camera is None or not isinstance(self.camera, Camera):
             raise RuntimeError("Camera dependency is not properly configured or is missing.")
-        image = await self.camera.get_image(mime_type=CameraMimeType.JPEG)
+        images = await self.camera.get_images()
+        if len(images) == 0:
+            raise ValueError("No images returned by get_images")
+        image = images[0]
         classifications = None
         if return_classifications:
             classifications = await self.get_classifications(
@@ -218,7 +221,10 @@ class DuplicateImageClassifier(Vision, EasyResource):
             )
         if self.camera is None or not isinstance(self.camera, Camera):
             raise RuntimeError("Camera dependency is not properly configured or is missing.")
-        im = await self.camera.get_image(mime_type=CameraMimeType.JPEG)
+        imgs = await self.camera.get_images()
+        if len(imgs) == 0:
+            raise ValueError("No images returned by get_images")
+        im = imgs[0]
         return await self.get_classifications(im, 1, extra=extra, timeout=timeout)
 
     async def get_classifications(
