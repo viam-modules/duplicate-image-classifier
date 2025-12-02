@@ -46,7 +46,7 @@ class TestDuplicateClassifier:
     async def test_get_classifications(self, fake_cam):
         # Test with a different image
         duplicate_classifier = get_vision_service(True)
-        images = await duplicate_classifier.camera.get_images()
+        images, _ = await duplicate_classifier.camera.get_images()
         result = await duplicate_classifier.get_classifications(
             image = images[0], # type: ignore
             count=1,
@@ -56,7 +56,7 @@ class TestDuplicateClassifier:
 
         # Test with a similar image
         duplicate_classifier = get_vision_service(False)
-        images = await duplicate_classifier.camera.get_images()
+        images, _ = await duplicate_classifier.camera.get_images()
         result = await duplicate_classifier.get_classifications(
             image = images[0], # type: ignore
             count=1,

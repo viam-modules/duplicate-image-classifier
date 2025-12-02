@@ -145,8 +145,8 @@ class DuplicateImageClassifier(Vision, EasyResource):
 
         if self.camera is None or not isinstance(self.camera, Camera):
             raise RuntimeError("Camera dependency is not properly configured or is missing.")
-        images = await self.camera.get_images()
-        if len(images) == 0:
+        images, _ = await self.camera.get_images()
+        if images is None or len(images) == 0:
             raise ValueError("No images returned by get_images")
         image = images[0]
         classifications = None
@@ -221,8 +221,8 @@ class DuplicateImageClassifier(Vision, EasyResource):
             )
         if self.camera is None or not isinstance(self.camera, Camera):
             raise RuntimeError("Camera dependency is not properly configured or is missing.")
-        imgs = await self.camera.get_images()
-        if len(imgs) == 0:
+        imgs, _ = await self.camera.get_images()
+        if imgs is None or len(imgs) == 0:
             raise ValueError("No images returned by get_images")
         im = imgs[0]
         return await self.get_classifications(im, 1, extra=extra, timeout=timeout)
