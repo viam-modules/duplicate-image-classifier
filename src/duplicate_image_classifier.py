@@ -30,7 +30,7 @@ class DuplicateImageClassifier(Vision, EasyResource):
     This is done by doing a pixel-wise diff of two images, by checking how different, 
     on average, two numpy array representations of the images are.
 
-    It inherits from the built-in resource subtype Vision and conforms to the
+    It inherits from the built-in resource API Vision and conforms to the
     ``Reconfigurable`` protocol, which signifies that this component can be
     reconfigured. Additionally, it specifies a constructor function
     ``BlurryClassifier.new`` which confirms to the
